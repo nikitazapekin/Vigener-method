@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Merienda:wght@400;500;600;800;900&display=swap" rel="stylesheet">
+
+    <title>Vigener method</title>
+</head>
+<body>
+    <div class="form">
+        <h1 class="title">Encryption by the Vigener method</h1>
+    <div class="bl">
+    <input type="text" class="typeWord" placeholder="type word..." />
+    <input type="text" class="typeKey" placeholder="type key..." />
+    <button class="ssubmit">Type secret word</button>
+    <p class="secret"></p>
+</div>
+<div class="bl1">
+    <input type="text" class="decodeWord" placeholder="type decoding word..."/>
+    <input type="text" class="decodeKey" placeholder="type decoding key... " />
+    <button class="sssubmit">Show decoded word</button>
+    <p class="dec"></p>
+    <p class="decoded"></p>
+</div>
+</div>
+<style>
+    body{ 
+    
+        background: linear-gradient(45deg, blue, grey);
+       min-height: 100vh;
+
+    }
+    .title {
+        text-align: center;
+        font-size: 700;
+        font-family: 'Merienda';
+    }
+    .form{
+        margin-top: 100px;
+        padding-top: 50px;
+        background-color: #fff;
+        width: 60%;
+        min-height: 50vh;
+        max-height: 80vh;
+        margin: 0 auto;
+       text-align: center;
+        border: 5px solid olivedrab
+    }
+    @media (max-width: 900px){
+        .form {
+            height: 500px;
+        }
+    }
+    @media (max-width: 700px){
+        .form {
+            height: 400px;
+            max-height: 400px;
+        }
+    }
+    .bl {
+        flex-wrap: wrap;
+        display: block; 
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        text-align: center;
+    }
+    .bl1{
+        display: block;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+       /* position: absolute; */
+    
+        margin-top: 200px;
+        text-align: center;
+    }
+    button, input {
+        cursor: pointer;
+    }
+    button {
+       
+        color: #fff;
+        background-color: orangered;
+        border: none;
+        width: 100px;
+        height: 40px;
+       transform: translateY(-10px);
+       transition: 2s;
+    }
+    button:hover{
+transform: translateY(1px);
+color: yellow
+    }
+</style>
+    <script>
+let ssubmit= document.querySelector('.ssubmit')
+function VigenèreCipher(key, abc) {
+    let letters="abcdefghijklmnopqrstuvwxyz"
+    let arrayOfLetters=[]
+    abc=abc.toLowerCase()
+    key=key.toLowerCase()
+   for(let i=0; i<letters.length;i++){
+    arrayOfLetters.push(letters[i])
+   }
+    let renderPassword="";
+    let arrayOfShifr=[]
+   while(renderPassword.length<abc.length){
+    renderPassword+=key
+   }
+   for(let i=0; i< abc.length; i++){
+    let item="";
+    item+=abc[i]
+    item+=renderPassword[i]
+    arrayOfShifr.push(item)
+
+   }
+   let arrayOfIndexes=[]
+   let arrayOfFirstItems=[]
+   let arrayOfSecItems=[]
+  
+   for(let i=0; i<arrayOfShifr.length; i++){
+    let item =arrayOfShifr[i]
+    let first=item[0]
+    let sec=item[1]
+    let indexOfFirst;
+    let indexOfSec;
+    for(let i=0; i<arrayOfLetters.length; i++){
+        if(first==arrayOfLetters[i]){
+            indexOfFirst=i
+            arrayOfFirstItems.push(indexOfFirst)
+        }
+    }
+   
+    for(let i=0; i<arrayOfLetters.length; i++){
+        if(sec==arrayOfLetters[i]){
+            indexOfSec=i
+            arrayOfSecItems.push(indexOfSec)
+        }
+    }
+
+   } 
+   let final=[]
+   for(let i=0; i<arrayOfFirstItems.length; i++){
+    let item=(arrayOfFirstItems[i]+arrayOfSecItems[i])%26
+    final.push(item)
+   }
+   let finalStroke=""
+   for(let i=0; i<final.length; i++){
+    let index=final[i]
+    let item=arrayOfLetters[index]
+ finalStroke+=item
+   }
+
+  this.encode = function (str) {
+   return (finalStroke)
+  };
+  this.decode = function (str) {
+  };
+}
+ssubmit.addEventListener("click", ()=> {
+    let word=document.querySelector('.typeWord').value
+let kkey=document.querySelector('.typeKey').value
+let secret=document.querySelector('.secret')
+    let vc = new VigenèreCipher(kkey, word);
+let encodedString = vc.encode("string");
+secret.textContent=encodedString
+})
+let sssubmit =document.querySelector('.sssubmit')
+function VigenèreCipherDecode(key, abc) {
+    let letters="abcdefghijklmnopqrstuvwxyz"
+    let arrayOfLetters=[]
+    abc=abc.toLowerCase()
+    key=key.toLowerCase()
+   for(let i=0; i<letters.length;i++){
+    arrayOfLetters.push(letters[i])
+   }
+    let renderPassword="";
+    let arrayOfShifr=[]
+   while(renderPassword.length<abc.length){
+    renderPassword+=key
+   }
+   for(let i=0; i< abc.length; i++){
+    let item="";
+    item+=abc[i]
+    item+=renderPassword[i]
+    arrayOfShifr.push(item)
+
+   }
+let arrayOfDecodeIndexes=[]
+for(let i=0; i<arrayOfShifr.length; i++){
+    let item=arrayOfShifr[i]
+    let first=item[0];
+    let sec=item[1];
+let firstValue;
+for(let j=0; j<arrayOfLetters.length; j++){
+if(arrayOfLetters[j]==first){
+    firstValue=j
+}
+}
+let secValue;
+for(let j=0; j<arrayOfLetters.length; j++){
+    if(arrayOfLetters[j]==sec){
+        secValue=j
+    }
+}
+let num=firstValue-secValue
+if(num<0){
+    num=num+26
+}
+arrayOfDecodeIndexes.push(num)
+}
+let decodeStroke=""
+for(let i=0; i<arrayOfDecodeIndexes.length; i++){
+    let item =arrayOfDecodeIndexes[i]
+   let itemLetter =arrayOfLetters[item]
+   decodeStroke+=itemLetter
+}
+  this.encode = function (str) {
+  return decodeStroke
+  };
+  this.decode = function (str) {
+  };
+}
+sssubmit.addEventListener("click", ()=> {
+    let dec =document.querySelector('.dec')
+    let decodeWord =document.querySelector('.decodeWord').value
+    let decodeKey = document.querySelector('.decodeKey').value
+    let vc = new VigenèreCipherDecode(decodeKey, decodeWord);
+let encodedString = vc.encode("string");
+dec.textContent=encodedString
+})
+
+    </script>
+</body>
+</html>
